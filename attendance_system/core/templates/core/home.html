@@ -1,0 +1,49 @@
+{% extends "core/base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div style='text-align: center;padding: 60px 20px; background-color: white;border-radius: 10px;box-shadow: var(--card-shadow);'>
+    <h1 style="color: var(--primary-color); font-size: 3em;margin-bottom: 10px;">
+        Attendance Management System
+    </h1>
+
+    <p style="font-size: 1.2em;color: var(--secondary-color);max-width: 600px;margin: 0 auto 30px;">
+       Our centralized platform for secure daily attendance tracking and weekly managerial approval
+    </p>
+
+    <div style="display: flex;justify-content: center;gap: 20px;margin-top: 30px;">
+        <a href="{% url 'login' %}" class="btn btn-outline-secondary" style='padding: 12px 30px; font-size: 1.1em;'>
+            Login to Your Dashboard
+        </a>
+
+        <a href="/admin" class="btn btn-outline-secondary" style="padding:12px 30px; font-size: 1.1em;">
+            Go to Admin Page
+        </a>
+
+    </div>
+
+    <hr style="margin-top: 50px; border-color: #ddd;">
+
+    <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin-top: 40px;gap: 30px;">
+        <div style="max-width: 300px;">
+            <h5 style="color: var(--success-color);">Employee Access</h5>
+            <p style="font-size: 0.9em;">Mark daily presence, view weekly summaries, and check manager approval status</p>
+        </div>
+
+        <div style="max-width: 300px;">
+            <h5 style="color: var(--secondary-color);">Manager Control</h5>
+            <p style="font-size: 0.9em;">Approve weekly attendance records for your team using a digital signature</p>
+
+        </div>
+
+        <div style="max-width: 300px;">
+            <h5 style="color:var(--danger-color);">Admin Oversight</h5>
+            <p style="font-size: 0.9em;">Manage user roles , assignments, and access full system attendance reports</p>
+        </div>
+
+
+    </div>
+
+</div>
+{% endblock %}

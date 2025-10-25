@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        AMS
+        {% block title %}{% endblock %}
+    </title>
+
+    <style>
+        :root{
+           color: #007bff;
+            color: #6c757d;
+            color:#28a745;
+            color:#dc3545;
+            color:#ffc107;
+            color:#f8f9fa;
+            box-shadow:  4px 12px rgba(0,0,0,0.1) ;
+        }
+
+        body{
+            font-family: Arial,  sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            color:#343a40;
+        }
+
+        /*navigation bar*/
+
+        .navbar{
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .navbar a{
+            color:white;
+            text-decoration: none;
+            padding: 0 10px;
+        }
+
+        .navbar-brand{font-size: 1.5em;font-weight: bold;}
+        .nav-links{display: flex;align-items: center;}
+
+        /* container  and dashboard layout (responsive grid)*/
+
+        .container{
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .dashboard-grid{
+            display: grid;
+            gap:20px;
+            grid-template-columns: 1fr; /* mobile default*/
+        }
+
+        @media (min-width:768px){
+            .dashboard-grid{
+                grid-template-columns: 1.5fr 3 fr; /* tablet/desktop layout*/
+            }
+        }
+
+        /* card styling */
+
+        .card{
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card-title{
+            color:var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* table styling */
+
+        .data-table{
+            width:100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .data-table th, .data-table td{
+            border: 1px solid #dee2e6;
+            padding: 12px 10px;
+            text-align: left;
+        }
+
+        .data-table thead th{
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .data-table tr:nth-child(even) {background-color: #f2f2f2;}
+
+        /* buttons and forms */
+
+        .btn{
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" href="{% url 'home' %}">Attendance Mgt. System</a>
+        <div class="nav-links">
+            {% if user.is_authenticated %}
+                <span style="padding-right: 15px; font-weight: bold;">{{ user.username }} ({{ user.role }})</span>
+                <a class="btn" style="background-color: #f8f9fa; color: var(--primary-color);" href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

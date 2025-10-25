@@ -1,0 +1,120 @@
+{% extends "core/base.html" %}
+
+{% block titlle %}Manager Dashboard{% endblock %}
+
+{% block content %}
+
+<style>
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.data-table thead th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+</style>
+
+    <div style="text-align:right; margin-bottom:15px;">
+        <a href="{% url 'home' %}" class="btn btn-outline-primary" style="padding:8px 18px; font-size:0.95em">
+            🏠Go to home Page
+        </a>
+
+    </div>
+   <div class="card">
+      <h3 class="card-title">My Employees-Approval Center</h3>
+
+      <p style="color:var(--secondary-color);">Review and approve attendance for the week starting:
+        <strong>{{current_week_start}}</strong>
+      </p>
+
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Weekly Summary (P/A/L)</th>
+                    <th>Status</th>
+                    <th>Action/Signature</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% if employee_data%}
+                {% for data in employee_data %}
+                <tr style="background-color: {% if data.is_approved %}#e6ffe6{% else %}white{% endif %};">
+                    <td style="font-weight:bold;">
+                        {{data.employee.get_full_name|default:data.employee.username}}
+                    </td>
+
+                    <td>
+                        <span class="badge badge-success" style="margin-right:5px;">P:
+                            {{data.summary.Present|default:0}} 
+                        </span>
+
+                        <span class="badge badge-danger" style="margin-right:5px;">A:
+                            {{data.summary.Absent|default:0}}
+                        </span>
+
+                        <span class="badge badge-warning" style="margin-right:5px;">L:
+                            {{data.summary.Leave|default:0}}
+                        </span>
+
+                    </td>
+
+                    <td>
+                        {% if data.is_approved %}
+                        <span class="badge badge-success">✅ Approved </span>
+                        {% else %}
+                        <span class="badge badge-warning">⚠️ Pending Review</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if data.is_approved %}
+                           <em>Approved by: {{data.approval_signature}}</em>
+                        {% else %}
+                        <form action="{% url 'approve_week' %}" method='POST' style='display:flex; gap:5px; align-items:center;'>
+                            {% csrf_token %}
+
+                            <input type="hidden" name="employee_id" value="{{data.employee.id}}" >
+                            <input type="hidden" name="week_start_date" value='{{data.week_start_date}}'>
+                            <input type="text" name="approval_signature" 
+                            placeholder="Signature (Text)" 
+                                   style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; flex-grow: 1; max-width: 150px;"
+                                   required 
+                                   {% if data.is_approved %}disabled{% endif %}>
+                            <button type="submit" class="btn btn-primary" style="padding:8px 12px; font-size:0.9em;
+                             {% if data.is_approved %} disabled{% endif %}
+                            ">Approve</button>
+
+
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+
+               {% else %}
+
+                <tr>
+                    <td colspan="4" style="text-align:center; color:var(--secondary-color);">
+                        No employees assigned or no records found
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+      </div>
+
+   </div>
+{% endblock %}

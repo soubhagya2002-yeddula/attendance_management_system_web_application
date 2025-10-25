@@ -1,0 +1,132 @@
+{% extends "core/base.html" %}
+
+{% block title %}Employee Dashboard{% endblock %}
+
+{% block content %}
+
+   <div style="margin-bottom: 15px;">
+    <a href="{% url 'home' %}" class="btn btn-secondary">🏠  Go to Home Page</a>
+</div>
+
+    <style>
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.data-table thead th {
+  background-color: #f5f5f5 !important;
+  color: #000 !important;
+  font-weight: 600;
+  text-align: left;
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+}
+.data-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.data-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+.data-table thead {
+  display: table-header-group !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.today-row {
+  background-color: #e7f5ff;
+}
+</style>
+
+<div class="dashboard-grid">
+    <div class="card" style="grid-column:1/-1; margin-bottom: 20px;">
+        <h4 class="card-title">Mark Daily Attendance (Today:{{today}})</h4>
+
+        {% if not already_marked_today %}
+           <form method="POST" action="{%  url 'mark_attendance' %}" style="display: flex; flex-direction: column; gap: 10px;">
+
+             {% csrf_token %}
+
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+
+                    <input type="radio" id="present" name="status" value="Present" required style="display: none;">
+
+                    <label for="present" class="btn btn-success" style="flex-grow: 1; max-width: 150px; padding: 15px 10px;">✅ Present</label>
+
+                    <input type="radio" id="absent" name="status" value="Absent" required style="display: none;">
+                    <label for="absent" class="btn btn-danger" style="flex-grow: 1; max-width: 150px; padding: 15px 10px;">❌ Absent</label>
+
+                    <input type="radio" id="leave" name="status" value="Leave" required style="display: none;">
+                    <label for="leave" class="btn btn-warning" style="flex-grow: 1; max-width: 150px; padding: 15px 10px;">🌴 Leave</label>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="margin-top: 15px;">Submit Attendance</button>
+
+           </form>
+        
+        {% else %}
+            <div style="background-color: #d4edda; color: #155724; border:1px solid #c3e6cb; padding: 15px; border-radius: 5px; text-align: center;">
+                ✅ Attendance already marked for today
+            </div>
+        {%  endif %}
+    </div>
+    <!-- continue -->
+
+    <div class="card" style="grid-column:1/-1;">
+        <h4 class="card-title">Weekly Summary (Starting {{  start_of_week }})</h4>
+        <p style="font-weight: bold; margin-bottom: 15px;">
+            Manager Approval Status:
+            {% if is_approved %}
+               <span class="badge badge-success">
+                    Approved
+               </span>
+            {% else %}
+                <span class="badge badge-warning">
+                    Pending
+                </span>
+            {% endif  %}
+        </p>
+
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Employee_Name</th>
+                        <th>Day</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in weekly_attendance %}
+                    <tr class="{% if record.date|date:'Y-m-d' == today|date:'Y-m-d' %}today-row{% endif %}">
+
+                    
+                        <td>{{ record.employee.get_full_name|default:record.employee.username }}</td>
+                        <td>{{ record.date|date:"D" }}</td>
+                        <td>{{ record.date|date:"M d, Y" }}</td>
+                        <td>
+                            {% if record.status == 'Present' %}
+                                <span class="badge badge-success">{{ record.status }}</span>
+                            {% elif record.status == 'Absent' %}
+                                <span class="badge badge-danger">{{ record.status }}</span>
+                            {% else %}
+                                <span class="badge badge-warning">{{ record.status }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" style="text-align: center;">No attendance recorded this week.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+                
