@@ -30,11 +30,11 @@ schema_view=get_schema_view(
         title="Attendance Management API",
         default_version='v1',
         description="API documentation for the Attendance Management System.Uses JWT(Bearer Token)",
-        contact=openapi.Contact(email='admin@attendance.com')
+        contact=openapi.Contact(email='yeddulasoubhagya@gmail.com')
     ),
 
     public=True,
-    permission_classes=(permissions.AllowAny),
+    permission_classes=[permissions.AllowAny],
 )
 
 urlpatterns = [
