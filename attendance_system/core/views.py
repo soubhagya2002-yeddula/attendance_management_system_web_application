@@ -157,7 +157,7 @@ def approve_week(request):
 def admin_dashboard(request):
     all_users=User.objects.all().order_by('role','username')
     context={'all_users':all_users}
-    return render(request,'core/admin_dashboard.html'.context)
+    return render(request,'core/admin_dashboard.html',context)
 
 @admin_required
 def full_attendance_report(request):
