@@ -1,1 +1,1 @@
-web: gunicorn attendance_system.attendance_system.wsgi:application --bind 0.0.0.0:$PORT 
+web: gunicorn attendance_system.wsgi:application --bind 0.0.0.0:$PORT 
