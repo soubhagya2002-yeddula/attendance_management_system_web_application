@@ -1,2 +1,2 @@
-web: gunicorn attendance_system.backend.wsgi:application
+web: gunicorn backend.wsgi:application
 

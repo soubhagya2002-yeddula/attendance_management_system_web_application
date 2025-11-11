@@ -68,7 +68,10 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'attendance_system.urls'
+ROOT_URLCONF = 'backend.urls'
+
+
+
 
 TEMPLATES = [
     {
@@ -87,7 +90,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'attendance_system.wsgi.application'
+WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 # Database
