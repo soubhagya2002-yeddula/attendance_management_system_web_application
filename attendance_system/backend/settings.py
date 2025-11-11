@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-@bunny$princy12345sunny'
 DEBUG = False
 
 
-ALLOWED_HOSTS = ['attendance-management-system-web-bs5q']
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Security settings for production only
